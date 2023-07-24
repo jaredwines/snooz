@@ -164,7 +164,19 @@ class SnoozFan(FanEntity, RestoreEntity):
         await self._async_execute_command(turn_off(transition))
 
     async def async_set_percentage(self, percentage: int) -> None:
-        await self._async_execute_command(set_volume(percentage))
+        setPercentage = 0
+
+        if percentage > 10 and percentage <= 30 :
+            setPercentage = 20
+        elif percentage > 30 and percentage <= 50:
+            setPercentage = 40
+        elif percentage > 50 and percentage <= 70:
+            setPercentage = 60
+        elif percentage > 70 and percentage <= 90:
+            setPercentage = 80
+        elif percentage > 90 and percentage <= 100:
+            setPercentage = 100
+        await self._async_execute_command(turn_on(setPercentage))
 
     async def _async_execute_command(self, command: SnoozCommandData) -> None:
         result = await self._device.async_execute_command(command)
